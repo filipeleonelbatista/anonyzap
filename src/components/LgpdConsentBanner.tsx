@@ -5,8 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import {
   LGPD_BANNER_CSS_VAR,
   LGPD_BANNER_SPACER,
+  LGPD_CONSENT_LEGACY_KEY,
   LGPD_CONSENT_STORAGE_KEY,
 } from "@/lib/lgpd-consent";
+import { migrateStorageKey } from "@/lib/storage-migration";
 
 /**
  * LGPD (Lei 13.709/2018): aviso sobre tratamento de dados no dispositivo e nos servidores.
@@ -17,7 +19,10 @@ export function LgpdConsentBanner() {
 
   useEffect(() => {
     try {
-      const ack = localStorage.getItem(LGPD_CONSENT_STORAGE_KEY);
+      const ack = migrateStorageKey(
+        LGPD_CONSENT_STORAGE_KEY,
+        LGPD_CONSENT_LEGACY_KEY
+      );
       if (!ack) setVisible(true);
     } catch {
       setVisible(true);

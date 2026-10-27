@@ -4,6 +4,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import type { User } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { sanitizeName } from "@/utils/sanitize";
+import { migrateStorageKey } from "@/lib/storage-migration";
 
 interface UserContextType {
   user: User | null;
@@ -18,13 +19,16 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-const STORAGE_KEY = "chat-anywhere:user";
+const STORAGE_KEY = "anonyzap:user";
+const LEGACY_STORAGE_KEY = "chat-anywhere:user";
 
 export function UserProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  migrateStorageKey(STORAGE_KEY, LEGACY_STORAGE_KEY);
+
   const [user, setUser, removeUser, isAuthReady] = useLocalStorage<User | null>(
     STORAGE_KEY,
     null
