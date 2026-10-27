@@ -5,7 +5,7 @@ import { Share2, Heart, Reply } from "lucide-react";
 
 /** Text shared with the room link (user-requested copy). */
 export const EMPTY_ROOM_SHARE_MESSAGE =
-  "entre no meu chat anywhere para conversarmos";
+  "entre no meu anonyzap para conversarmos";
 
 function buildRoomUrl(roomId: string): string {
   if (typeof window !== "undefined") {
@@ -13,7 +13,7 @@ function buildRoomUrl(roomId: string): string {
   }
   const base =
     process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "") ??
-    "https://chat-anywhere.vercel.app";
+    "https://anonyzap.vercel.app";
   return `${base}/${encodeURIComponent(roomId)}`;
 }
 
@@ -33,7 +33,7 @@ export function EmptyRoomHints({ roomId }: Props) {
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share({
-          title: `Sala #${roomId} — Chat Anywhere`,
+          title: `Sala #${roomId} — AnonyZap`,
           text: `${EMPTY_ROOM_SHARE_MESSAGE}\n${url}`,
         });
         return;

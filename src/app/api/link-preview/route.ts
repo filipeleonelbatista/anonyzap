@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
     const res = await fetch(url, {
       signal: controller.signal,
-      headers: { "User-Agent": "chat-anywhere/1.0" },
+      headers: { "User-Agent": "anonyzap/1.0" },
     });
     clearTimeout(timeout);
 

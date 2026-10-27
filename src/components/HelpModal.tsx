@@ -9,7 +9,7 @@ interface Props {
 
 const FAQ = [
   {
-    q: "O que é o Chat-Anywhere?",
+    q: "O que é o AnonyZap?",
     a: "É um chat em tempo real que funciona direto do navegador. Cada URL é uma sala de chat diferente — compartilhe o link com quem quiser conversar.",
   },
   {
@@ -69,7 +69,7 @@ export function HelpModal({ isOpen, onClose }: Props) {
             <span className="text-3xl">💬</span>
             <div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-                Sobre o Chat-Anywhere
+                Sobre o AnonyZap
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Chat em tempo real, anônimo e temporário

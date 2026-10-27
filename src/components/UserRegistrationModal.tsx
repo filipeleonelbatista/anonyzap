@@ -67,7 +67,7 @@ export function UserRegistrationModal({ roomId, onRegister }: Props) {
           <div className="text-center mb-2">
             <div className="text-3xl mb-1">💬</div>
             <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-              Bem-vindo ao Chat-Anywhere!
+              Bem-vindo ao AnonyZap!
             </h1>
           </div>
 
