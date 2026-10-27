@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./public/icon.svg" width="120" height="120" alt="Chat-Anywhere Logo">
+  <img src="./public/icon.svg" width="120" height="120" alt="AnonyZap Logo">
 </p>
 
-<h1 align="center">Chat-Anywhere 💬</h1>
+<h1 align="center">AnonyZap 💬</h1>
 
 <p align="center">
   <strong>Chat em tempo real, anônimo e temporário — direto do navegador.</strong>
@@ -21,7 +21,7 @@
 
 ## 📋 Sobre
 
-**Chat-Anywhere** é uma aplicação de chat em tempo real que funciona 100% no navegador. Cada URL é uma sala de chat diferente — compartilhe o link com quem quiser conversar. **Sem cadastro, sem dados permanentes, sem rastreamento.**
+**AnonyZap** é uma aplicação de chat em tempo real que funciona 100% no navegador. Cada URL é uma sala de chat diferente — compartilhe o link com quem quiser conversar. **Sem cadastro, sem dados permanentes, sem rastreamento.**
 
 As mensagens expiram automaticamente após **24 horas**. Seus dados (nome, email, avatar) ficam salvos apenas no seu navegador (localStorage).
 
@@ -44,7 +44,7 @@ As mensagens expiram automaticamente após **24 horas**. Seus dados (nome, email
 
 ## 🎯 Como usar
 
-1. **Acesse** a URL da sala (ex: `https://chat-anywhere.vercel.app/minha-sala`)
+1. **Acesse** a URL da sala (ex: `https://anonyzap.vercel.app/minha-sala`)
 2. **Escolha** um avatar, nome e email
 3. **Compartilhe** o link com quem quiser conversar
 4. **Pronto!** As mensagens aparecem em tempo real
@@ -78,8 +78,8 @@ As mensagens expiram automaticamente após **24 horas**. Seus dados (nome, email
 
 ```bash
 # Clone o repositório
-git clone https://github.com/filipeleonelbatista/chat-anywhere.git
-cd chat-anywhere
+git clone https://github.com/filipeleonelbatista/anonyzap.git
+cd anonyzap
 
 # Instale as dependências
 npm install
@@ -139,7 +139,7 @@ npm run lint
 
 O projeto está configurado para deploy na **Vercel** (plano Hobby).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/filipeleonelbatista/chat-anywhere)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/filipeleonelbatista/anonyzap)
 
 **Passos:**
 1. Conecte o repositório na Vercel
