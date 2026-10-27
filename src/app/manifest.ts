@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Chat-Anywhere — Instant Chat Rooms",
-    short_name: "Chat-Anywhere",
+    name: "AnonyZap — Instant Chat Rooms",
+    short_name: "AnonyZap",
     description:
       "Create or join instant chat rooms with just a URL. No signup, no data storage, no tracking.",
     start_url: "/",

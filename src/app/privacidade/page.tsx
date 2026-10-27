@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://chat-anywhere.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://anonyzap.vercel.app";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade",
   description:
-    "Como o Chat-Anywhere trata dados pessoais em conformidade com a LGPD (Lei 13.709/2018).",
+    "Como o AnonyZap trata dados pessoais em conformidade com a LGPD (Lei 13.709/2018).",
   alternates: {
     canonical: `${BASE_URL}/privacidade`,
   },
@@ -24,7 +24,7 @@ export default function PrivacidadePage() {
       </h1>
       <p className="mb-8 text-sm text-gray-600 dark:text-gray-400">
         Última atualização: maio de 2026. Este documento descreve o tratamento de dados no
-        serviço <strong>Chat-Anywhere</strong>, em alinhamento com a Lei Geral de Proteção de
+        serviço <strong>AnonyZap</strong>, em alinhamento com a Lei Geral de Proteção de
         Dados Pessoais (
         <a
           href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
@@ -42,7 +42,7 @@ export default function PrivacidadePage() {
           1. Quem é responsável pelo tratamento
         </h2>
         <p>
-          O tratamento dos dados ocorre em favor da operação do aplicativo web Chat-Anywhere
+          O tratamento dos dados ocorre em favor da operação do aplicativo web AnonyZap
           (incluindo instâncias hospedadas pelo operador do site). Para exercer seus direitos
           previstos na LGPD, utilize o canal de contato divulgado pelo operador da instância
           que você utiliza (por exemplo, repositório ou página de contato do projeto).

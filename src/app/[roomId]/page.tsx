@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import RoomClient from "./room-client";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://chat-anywhere.vercel.app";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://anonyzap.vercel.app";
 
 export async function generateMetadata({
   params,
@@ -13,14 +13,14 @@ export async function generateMetadata({
 
   return {
     title: `Room #${roomName}`,
-    description: `Join the conversation in room #${roomName} on Chat-Anywhere. Real-time chat, no signup needed, no data stored. Share images and links instantly.`,
+    description: `Join the conversation in room #${roomName} on AnonyZap. Real-time chat, no signup needed, no data stored. Share images and links instantly.`,
     openGraph: {
-      title: `Chat-Anywhere — Room #${roomName}`,
+      title: `AnonyZap — Room #${roomName}`,
       description: `Join the conversation in room #${roomName}. Real-time chat, no signup needed, no data stored.`,
       url: roomUrl,
     },
     twitter: {
-      title: `Chat-Anywhere — Room #${roomName}`,
+      title: `AnonyZap — Room #${roomName}`,
       description: `Join the conversation in room #${roomName}. Real-time chat, no signup needed.`,
     },
     alternates: {
