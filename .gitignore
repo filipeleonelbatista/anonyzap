@@ -6,7 +6,6 @@ next-env.d.ts
 
 # Brainstorming / design scratch files (not part of the app)
 /Project.md
-/agents.md
 /approaches.md
 /assumed-responses.md
 /clarifying-question-*.md
