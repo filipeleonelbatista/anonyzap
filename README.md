@@ -103,6 +103,9 @@ BLOB_READ_WRITE_TOKEN=...
 # Cron: limpeza de imagens antigas no Blob (`/api/cron/clean-blobs`)
 CRON_SECRET=...
 
+# GIF picker (`/api/giphy`) — crie uma chave gratuita em https://developers.giphy.com/
+GIPHY_API_KEY=...
+
 # Base URL (opcional, para OG images)
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```

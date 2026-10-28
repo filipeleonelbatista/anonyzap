@@ -22,6 +22,15 @@ export interface LinkPreview {
   image?: string;
 }
 
+export interface GifResult {
+  id: string;
+  title: string;
+  /** Thumbnail for the picker grid (GIPHY fixed_width). */
+  smallUrl: string;
+  /** Full GIF URL sent in the message (GIPHY downsized_medium). */
+  url: string;
+}
+
 export interface ReplyTo {
   messageId: string;
   senderName: string;
