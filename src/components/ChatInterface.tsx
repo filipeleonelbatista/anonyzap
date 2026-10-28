@@ -4,6 +4,8 @@ import { HelpCircle, Users, Share2 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { RoomProvider } from "@/context/RoomContext";
 import { useRoom } from "@/context/RoomContext";
+import { useI18n } from "@/context/LanguageContext";
+import { LanguageToggle } from "./LanguageToggle";
 import { UserRegistrationModal } from "./UserRegistrationModal";
 import { UserAuthLoadingScreen } from "./UserAuthLoadingScreen";
 import { MessageList } from "./MessageList";
@@ -21,6 +23,7 @@ interface Props {
 
 function ChatContent({ roomId }: { roomId: string }) {
   const { user, updateProfile } = useUser();
+  const { t } = useI18n();
   const [helpOpen, setHelpOpen] = useState(false);
   const [peopleOpen, setPeopleOpen] = useState(false);
   const [editProfileOpen, setEditProfileOpen] = useState(false);
@@ -62,9 +65,9 @@ function ChatContent({ roomId }: { roomId: string }) {
       await navigator.clipboard.writeText(url);
       showShareToast();
     } catch {
-      window.prompt("Copie o link da sala:", url);
+      window.prompt(t.header.copyPrompt, url);
     }
-  }, [roomId, showShareToast]);
+  }, [roomId, showShareToast, t]);
 
   const handleReply = useCallback((message: Message) => {
     setReplyingTo({
@@ -98,16 +101,16 @@ function ChatContent({ roomId }: { roomId: string }) {
       const { url } = (await res.json()) as { url: string };
       sendMessage("", { imageUrl: url });
     } catch {
-      alert("Falha ao enviar imagem. Tente novamente.");
+      alert(t.header.imageError);
     }
   };
 
   const statusLabel =
     status.type === "connected"
-      ? "Conectado"
+      ? t.status.connected
       : status.type === "reconnecting"
-        ? "Reconectando..."
-        : "Desconectado";
+        ? t.status.reconnecting
+        : t.status.disconnected;
 
   return (
     <div
@@ -124,8 +127,8 @@ function ChatContent({ roomId }: { roomId: string }) {
             type="button"
             onClick={() => setEditProfileOpen(true)}
             className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-xl transition hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
-            aria-label="Editar nome e avatar"
-            title="Editar perfil"
+            aria-label={t.header.editProfileAria}
+            title={t.header.editProfile}
           >
             {user!.avatar}
           </button>
@@ -149,29 +152,30 @@ function ChatContent({ roomId }: { roomId: string }) {
           </div>
         </div>
         <div className="flex items-center gap-1 flex-shrink-0">
+          <LanguageToggle />
           <ThemeToggle />
           <button
             type="button"
             onClick={() => void handleShareRoom()}
             className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-colors hover:bg-white/20"
-            aria-label="Compartilhar link da sala"
-            title="Copiar link da sala"
+            aria-label={t.header.shareAria}
+            title={t.header.shareTitle}
           >
             <Share2 className="h-[18px] w-[18px]" strokeWidth={2} />
           </button>
           <button
             onClick={() => setPeopleOpen(true)}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 text-white transition-colors"
-            aria-label="Pessoas na sala"
-            title="Pessoas na sala"
+            aria-label={t.header.peopleAria}
+            title={t.header.peopleTitle}
           >
             <Users className="w-[18px] h-[18px]" strokeWidth={2} />
           </button>
           <button
             onClick={() => setHelpOpen(true)}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 text-white transition-colors"
-            aria-label="Ajuda"
-            title="Como funciona"
+            aria-label={t.header.helpAria}
+            title={t.header.helpTitle}
           >
             <HelpCircle className="w-[18px] h-[18px]" strokeWidth={2} />
           </button>
@@ -218,7 +222,7 @@ function ChatContent({ roomId }: { roomId: string }) {
           aria-live="polite"
           className="pointer-events-none fixed bottom-24 left-1/2 z-[60] max-w-[min(90vw,20rem)] -translate-x-1/2 rounded-lg bg-gray-900 px-4 py-2.5 text-center text-sm text-white shadow-lg dark:bg-gray-100 dark:text-gray-900"
         >
-          Link da sala copiado para a área de transferência.
+          {t.header.shareToast}
         </div>
       ) : null}
     </div>

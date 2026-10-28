@@ -4,6 +4,7 @@ import { ImagePlus, Send, X } from "lucide-react";
 import { LinkPreview } from "./LinkPreview";
 import { useLinkDetection } from "@/hooks/useLinkDetection";
 import { isValidFileType, isValidFileSize } from "@/utils/validation";
+import { useI18n } from "@/context/LanguageContext";
 import type { LinkPreview as LinkPreviewType, ReplyTo } from "@/types";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCancelReply }: Props) {
   const [text, setText] = useState("");
   const { links, detectLinks, clearLinks } = useLinkDetection();
+  const { t } = useI18n();
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
@@ -83,11 +85,11 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
     e.target.value = "";
     if (!file) return;
     if (!isValidFileType(file)) {
-      alert("Tipo de arquivo inválido. Use JPG, PNG, GIF ou WebP.");
+      alert(t.input.invalidFileType);
       return;
     }
     if (!isValidFileSize(file)) {
-      alert("Arquivo muito grande. Máximo 5 MB.");
+      alert(t.input.fileTooLarge);
       return;
     }
     onSendImage(file);
@@ -109,7 +111,7 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
             type="button"
             onClick={() => onCancelReply?.()}
             className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-black/5 dark:hover:bg-white/10 flex-shrink-0"
-            aria-label="Cancelar reply"
+            aria-label={t.input.cancelReply}
           >
             <X className="w-4 h-4" strokeWidth={2.5} />
           </button>
@@ -137,7 +139,7 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
             onClick={handleImageButtonClick}
             disabled={disabled}
             className="w-12 h-12 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex-shrink-0 mb-[1.8px] disabled:opacity-40 disabled:pointer-events-none"
-            aria-label="Adicionar imagem"
+            aria-label={t.input.addImage}
           >
             <ImagePlus className="w-6 h-6" strokeWidth={2} />
           </button>
@@ -147,7 +149,7 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
               value={text}
               onChange={handleTextChange}
               onKeyDown={handleKeyDown}
-              placeholder="Digite uma mensagem"
+              placeholder={t.input.placeholder}
               rows={1}
               className="w-full resize-none px-3 py-3 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none overflow-y-auto text-sm leading-5"
               disabled={disabled}
@@ -157,7 +159,7 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
             type="submit"
             disabled={!text.trim() || disabled}
             className="w-12 h-12 flex items-center justify-center bg-whatsapp-green hover:bg-whatsapp-green-dark disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white rounded-full transition-colors flex-shrink-0 mb-[1.8px]"
-            aria-label="Send message"
+            aria-label={t.input.send}
           >
             <Send className="w-6 h-6" strokeWidth={2} />
           </button>

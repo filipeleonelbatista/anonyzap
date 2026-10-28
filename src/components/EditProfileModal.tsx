@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { AvatarSelector } from "./AvatarSelector";
 import { isValidName } from "@/utils/validation";
 import { sanitizeName } from "@/utils/sanitize";
+import { useI18n } from "@/context/LanguageContext";
 import type { User } from "@/types";
 
 interface Props {
@@ -18,6 +19,7 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
   const [name, setName] = useState(user.name);
   const [avatar, setAvatar] = useState(user.avatar);
   const [errors, setErrors] = useState<{ name?: string; avatar?: string }>({});
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -32,10 +34,10 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
     e.preventDefault();
     const next: typeof errors = {};
     if (!isValidName(name)) {
-      next.name = "Nome deve ter entre 2 e 50 caracteres";
+      next.name = t.validation.name;
     }
     if (!avatar) {
-      next.avatar = "Selecione um avatar";
+      next.avatar = t.validation.avatar;
     }
     setErrors(next);
     if (Object.keys(next).length > 0) return;
@@ -58,13 +60,13 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
             id="edit-profile-title"
             className="text-lg font-semibold text-gray-900 dark:text-white"
           >
-            Editar perfil
+            {t.profile.title}
           </h2>
           <button
             type="button"
             onClick={onClose}
             className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400"
-            aria-label="Fechar"
+            aria-label={t.profile.close}
           >
             <X className="h-4 w-4" strokeWidth={2.5} />
           </button>
@@ -72,13 +74,13 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
 
         <form onSubmit={handleSubmit} className="space-y-4 p-4">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Email: <span className="font-medium text-gray-700 dark:text-gray-300">{user.email}</span>{" "}
-            (não pode ser alterado aqui)
+            {t.profile.emailLabel} <span className="font-medium text-gray-700 dark:text-gray-300">{user.email}</span>{" "}
+            {t.profile.emailImmutable}
           </p>
 
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300">
-              Avatar
+              {t.profile.avatarLabel}
             </label>
             <AvatarSelector selected={avatar} onSelect={setAvatar} />
             {errors.avatar && (
@@ -91,7 +93,7 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
               htmlFor="edit-profile-name"
               className="mb-1 block text-xs font-medium text-gray-700 dark:text-gray-300"
             >
-              Nome
+              {t.profile.nameLabel}
             </label>
             <input
               id="edit-profile-name"
@@ -100,7 +102,7 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
               onChange={(e) => setName(e.target.value)}
               maxLength={50}
               className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-whatsapp-green dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-              placeholder="Seu nome"
+              placeholder={t.profile.namePlaceholder}
             />
             {errors.name && (
               <p className="mt-1 text-sm text-red-500">{errors.name}</p>
@@ -113,13 +115,13 @@ export function EditProfileModal({ isOpen, onClose, user, onSave }: Props) {
               onClick={onClose}
               className="flex-1 rounded-lg border border-gray-300 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
             >
-              Cancelar
+              {t.profile.cancel}
             </button>
             <button
               type="submit"
               className="flex-1 rounded-lg bg-whatsapp-green py-2.5 text-sm font-semibold text-white transition-colors hover:bg-whatsapp-green-dark"
             >
-              Salvar
+              {t.profile.save}
             </button>
           </div>
         </form>

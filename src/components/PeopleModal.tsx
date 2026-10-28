@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useI18n } from "@/context/LanguageContext";
 
 interface ConnectedUser {
   id: string;
@@ -17,6 +18,7 @@ interface Props {
 export function PeopleModal({ roomId, isOpen, onClose }: Props) {
   const [users, setUsers] = useState<ConnectedUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -35,12 +37,12 @@ export function PeopleModal({ roomId, isOpen, onClose }: Props) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-sm w-full mx-4 max-h-[80dvh] overflow-y-auto">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Pessoas na sala
+            {t.people.title}
           </h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors"
-            aria-label="Fechar"
+            aria-label={t.profile.close}
           >
             <X className="w-4 h-4" strokeWidth={2.5} />
           </button>
@@ -48,11 +50,11 @@ export function PeopleModal({ roomId, isOpen, onClose }: Props) {
         <div className="p-4">
           {loading ? (
             <p className="text-sm text-gray-500 text-center">
-              Carregando...
+              {t.people.loading}
             </p>
           ) : users.length === 0 ? (
             <p className="text-sm text-gray-500 text-center">
-              Ninguém conectado no momento
+              {t.people.empty}
             </p>
           ) : (
             <ul className="space-y-2">
@@ -71,7 +73,7 @@ export function PeopleModal({ roomId, isOpen, onClose }: Props) {
                     <div className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-green-500" />
                       <span className="text-xs text-green-600 dark:text-green-400">
-                        Online
+                        {t.people.online}
                       </span>
                     </div>
                   </div>

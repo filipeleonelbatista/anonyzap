@@ -1,13 +1,19 @@
-export function formatTimestamp(ts: number): string {
+export function formatTimestamp(
+  ts: number,
+  locale = "pt-BR"
+): string {
   const date = new Date(ts);
-  return date.toLocaleTimeString("pt-BR", {
+  return date.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
   });
 }
 
-export function formatFullTimestamp(ts: number): string {
-  return new Date(ts).toLocaleString("en-US", {
+export function formatFullTimestamp(
+  ts: number,
+  locale = "pt-BR"
+): string {
+  return new Date(ts).toLocaleString(locale, {
     hour: "2-digit",
     minute: "2-digit",
     month: "short",

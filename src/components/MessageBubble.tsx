@@ -2,10 +2,13 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { Clock, Check, CheckCircle2, ChevronDown, X } from "lucide-react";
+import { ImageLightbox } from "@/components/ImageLightbox";
+import { PreviewPlaceholder } from "@/components/PreviewPlaceholder";
 import type { Message, Reaction, ReplyTo } from "@/types";
 import { REACTION_EMOJIS } from "@/types";
 import { formatTimestamp } from "@/utils/formatting";
 import { useRoom } from "@/context/RoomContext";
+import { useI18n } from "@/context/LanguageContext";
 
 const URL_REGEX = /(https?:\/\/[^\s<]+[^\s<.,;:!?)\]}>])/g;
 
@@ -97,7 +100,9 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
   const [menuOpen, setMenuOpen] = useState(false);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [reactionModalOpen, setReactionModalOpen] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const { reactToMessage, deleteMessage } = useRoom();
+  const { t, locale } = useI18n();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const reactionGroups = useMemo(
@@ -170,8 +175,8 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
   if (message.type === "system" && message.presence) {
     const line =
       message.presence === "join"
-        ? `${message.senderName} entrou na conversa`
-        : `${message.senderName} saiu da conversa`;
+        ? `${message.senderName} ${t.bubble.joined}`
+        : `${message.senderName} ${t.bubble.left}`;
     return (
       <div className="flex justify-center py-1">
         <div
@@ -231,7 +236,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                 {message.replyTo.deleted ? (
-                  <span className="italic">mensagem apagada</span>
+                  <span className="italic">{t.bubble.deletedShort}</span>
                 ) : (
                   message.replyTo.content
                 )}
@@ -245,7 +250,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
           <button
             onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
             className="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-            aria-label="Menu"
+            aria-label={t.bubble.menu}
             aria-expanded={menuOpen}
           >
             <ChevronDown className="w-4 h-4" strokeWidth={2.5} />
@@ -260,7 +265,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                 onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
               >
-                😊 Reagir
+                😊 {t.bubble.react}
               </button>
 
               <button
@@ -270,7 +275,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                 }}
                 className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
               >
-                ↩ Responder
+                ↩ {t.bubble.reply}
               </button>
 
               {emojiPickerOpen && (
@@ -299,7 +304,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                   }}
                   className="w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
                 >
-                  🗑 Excluir
+                  🗑 {t.bubble.delete}
                 </button>
               )}
             </div>
@@ -308,16 +313,16 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
 
         {message.deleted ? (
           <div className="italic text-gray-400 dark:text-gray-500 text-sm py-3 text-center">
-            mensagem apagada pelo usuario
+            {t.bubble.deletedLong}
           </div>
         ) : (
           <>
             {message.type === "image" && message.imageUrl && (
               <img
                 src={message.imageUrl}
-                alt="Shared image"
-                className="max-w-full rounded-lg mb-1 cursor-pointer"
-                onClick={() => window.open(message.imageUrl, "_blank")}
+                alt={t.bubble.sharedImage}
+                className="max-w-[320px] rounded-lg mb-1 cursor-pointer"
+                onClick={() => setLightboxOpen(true)}
               />
             )}
             {message.type === "link" && message.linkPreview && (
@@ -325,9 +330,9 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                 href={message.linkPreview.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block mb-1 border rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-600"
+                className="block max-w-[320px] mb-1 border rounded-lg overflow-hidden hover:bg-gray-50 dark:hover:bg-gray-600"
               >
-                {message.linkPreview.image && (
+                {message.linkPreview.image ? (
                   <div className="aspect-video overflow-hidden">
                     <img
                       src={message.linkPreview.image}
@@ -335,6 +340,8 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                       className="w-full h-full object-cover"
                     />
                   </div>
+                ) : (
+                  <PreviewPlaceholder className="aspect-video" />
                 )}
                 <div className="p-2">
                   <p className="text-sm font-semibold truncate">
@@ -355,7 +362,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
         <div className="relative mt-1">
           <div className="flex w-full justify-end items-center gap-1">
             <span className="text-[10px] text-gray-400">
-              {formatTimestamp(message.timestamp)}
+              {formatTimestamp(message.timestamp, locale)}
             </span>
             {isOwn && message.status === "pending" && <ClockIcon />}
             {isOwn && message.status === "sent" && <SingleCheckIcon />}
@@ -378,7 +385,7 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                 className="pointer-events-auto inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white py-0.5 pl-0.5 pr-2 shadow-lg transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600"
                 aria-haspopup="dialog"
                 aria-expanded={reactionModalOpen}
-                aria-label={`Reações: ${reactionTotal} no total`}
+                aria-label={`${t.bubble.reactionsLabel}: ${reactionTotal} ${t.bubble.reactionsTotal}`}
               >
                 <span className="flex items-center pl-0.5">
                   {reactionGroups.map((g, idx) => (
@@ -404,6 +411,10 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
       </div>
     </div>
 
+    {lightboxOpen && message.imageUrl && (
+      <ImageLightbox src={message.imageUrl} onClose={() => setLightboxOpen(false)} />
+    )}
+
     {reactionModalOpen &&
       typeof document !== "undefined" &&
       createPortal(
@@ -424,13 +435,13 @@ export function MessageBubble({ message, isOwn, onReply, scrollToMessage }: Prop
                 id="reaction-modal-title"
                 className="text-lg font-semibold text-gray-900 dark:text-white"
               >
-                Reações
+                {t.bubble.reactionsTitle}
               </h2>
               <button
                 type="button"
                 onClick={() => setReactionModalOpen(false)}
                 className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                aria-label="Fechar"
+                aria-label={t.profile.close}
               >
                 <X className="h-5 w-5" strokeWidth={2.5} />
               </button>

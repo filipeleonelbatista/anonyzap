@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MessageBubble } from "@/components/MessageBubble";
+import { LanguageProvider } from "@/context/LanguageContext";
 import type { Message } from "@/types";
 
 jest.mock("@/context/RoomContext", () => ({
@@ -31,40 +32,32 @@ const baseMessage: Message = {
 
 const noop = () => {};
 
-describe("MessageBubble", () => {
-  it("renders text message content", () => {
-    render(
+function renderBubble(message: Message, isOwn = false) {
+  return render(
+    <LanguageProvider>
       <MessageBubble
-        message={baseMessage}
-        isOwn={false}
+        message={message}
+        isOwn={isOwn}
         onReply={noop}
         scrollToMessage={noop}
       />
-    );
+    </LanguageProvider>
+  );
+}
+
+describe("MessageBubble", () => {
+  it("renders text message content", () => {
+    renderBubble(baseMessage);
     expect(screen.getByText("Hello!")).toBeTruthy();
   });
 
   it("shows sender name for other messages", () => {
-    render(
-      <MessageBubble
-        message={baseMessage}
-        isOwn={false}
-        onReply={noop}
-        scrollToMessage={noop}
-      />
-    );
+    renderBubble(baseMessage);
     expect(screen.getByText("Alice")).toBeTruthy();
   });
 
   it("hides sender name for own messages", () => {
-    render(
-      <MessageBubble
-        message={{ ...baseMessage, senderId: "me" }}
-        isOwn={true}
-        onReply={noop}
-        scrollToMessage={noop}
-      />
-    );
+    renderBubble({ ...baseMessage, senderId: "me" }, true);
     expect(screen.queryByText("Alice")).toBeNull();
   });
 
@@ -77,14 +70,7 @@ describe("MessageBubble", () => {
       content: "",
       senderName: "Bob",
     };
-    render(
-      <MessageBubble
-        message={joinMsg}
-        isOwn={false}
-        onReply={noop}
-        scrollToMessage={noop}
-      />
-    );
+    renderBubble(joinMsg);
     expect(screen.getByRole("status").textContent).toContain(
       "Bob entrou na conversa"
     );
@@ -99,14 +85,7 @@ describe("MessageBubble", () => {
       content: "",
       senderName: "Bob",
     };
-    render(
-      <MessageBubble
-        message={leaveMsg}
-        isOwn={false}
-        onReply={noop}
-        scrollToMessage={noop}
-      />
-    );
+    renderBubble(leaveMsg);
     expect(screen.getByRole("status").textContent).toContain(
       "Bob saiu da conversa"
     );

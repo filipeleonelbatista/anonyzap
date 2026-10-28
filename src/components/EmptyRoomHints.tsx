@@ -2,10 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { Share2, Heart, Reply } from "lucide-react";
-
-/** Text shared with the room link (user-requested copy). */
-export const EMPTY_ROOM_SHARE_MESSAGE =
-  "entre no meu anonyzap para conversarmos";
+import { useI18n } from "@/context/LanguageContext";
 
 function buildRoomUrl(roomId: string): string {
   if (typeof window !== "undefined") {
@@ -26,15 +23,16 @@ interface Props {
 
 export function EmptyRoomHints({ roomId }: Props) {
   const [copied, setCopied] = useState(false);
+  const { t } = useI18n();
 
   const handleShare = useCallback(async () => {
     const url = buildRoomUrl(roomId);
-    const fullText = `${EMPTY_ROOM_SHARE_MESSAGE}\n\n${url}`;
+    const fullText = `${t.empty.inviteMessage}\n\n${url}`;
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share({
-          title: `Sala #${roomId} — AnonyZap`,
-          text: `${EMPTY_ROOM_SHARE_MESSAGE}\n${url}`,
+          title: `${t.empty.shareTitle} #${roomId} — AnonyZap`,
+          text: `${t.empty.inviteMessage}\n${url}`,
         });
         return;
       }
@@ -46,9 +44,9 @@ export function EmptyRoomHints({ roomId }: Props) {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt("Copie o convite:", fullText);
+      window.prompt(t.empty.copyPrompt, fullText);
     }
-  }, [roomId]);
+  }, [roomId, t]);
 
   return (
     <div className="flex w-full max-w-md flex-col gap-3">
@@ -56,7 +54,7 @@ export function EmptyRoomHints({ roomId }: Props) {
         type="button"
         onClick={handleShare}
         className={`${cardBase} flex cursor-pointer flex-col items-center gap-2 transition hover:bg-gray-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-whatsapp-green dark:hover:bg-white/5`}
-        aria-label="Compartilhar link da sala com uma mensagem de convite"
+        aria-label={t.empty.inviteAria}
       >
         <Share2
           className="h-8 w-8 text-whatsapp-green dark:text-whatsapp-green"
@@ -64,11 +62,11 @@ export function EmptyRoomHints({ roomId }: Props) {
           aria-hidden
         />
         <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          Convidar amigos
+          {t.empty.invite}
         </span>
         {copied ? (
           <span className="text-xs font-medium text-green-600 dark:text-green-400">
-            Copiado! Cole no WhatsApp ou onde quiser.
+            {t.empty.copied}
           </span>
         ) : null}
       </button>
@@ -83,7 +81,7 @@ export function EmptyRoomHints({ roomId }: Props) {
           aria-hidden
         />
         <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-          Reaja a mensagens
+          {t.empty.react}
         </p>
       </div>
 
@@ -97,7 +95,7 @@ export function EmptyRoomHints({ roomId }: Props) {
           aria-hidden
         />
         <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
-          Responda mensagens
+          {t.empty.reply}
         </p>
       </div>
     </div>

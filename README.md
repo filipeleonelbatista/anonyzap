@@ -109,6 +109,8 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 O histórico de cada sala é uma **janela móvel de 24 horas** por `timestamp` da mensagem (alinhada ao TTL do KV): qualquer pessoa que abrir a mesma sala vê o mesmo recorte das últimas 24h; ao rolar para cima, carrega-se o restante ainda dentro dessa janela.
 
+> ⚠️ **Banco Upstash gratuito deletado** — bancos gratuitos do Upstash são **removidos automaticamente após 14 dias de inatividade**. Sintoma: `getaddrinfo ENOTFOUND <nome>.upstash.io` e erros 500 nas rotas que usam KV. Para restaurar: no console do Upstash, "Restore the Database" recupera os dados dos backups, mas **o banco de destino precisa ser criado antes** para receber os dados restaurados. Depois de restaurar/criar, atualize `KV_URL`, `KV_REST_API_URL`, `KV_REST_API_TOKEN` e `KV_REST_API_READ_ONLY_TOKEN` no ambiente (Vercel/local).
+
 **Presença (balões “entrou / saiu”):** a contagem de abas por usuário usa **Redis** (`SADD`/`SREM` em `room:{roomId}:presence:user:{userId}` com TTL), para que várias instâncias serverless não dupliquem join/leave. O mapa de conexões SSE em memória continua só na instância atual — por exemplo, o modal “Pessoas” (`getRoomUsers`) ainda lista apenas quem está conectado à **mesma** instância; alinhar isso ao Redis pode ser um passo futuro.
 
 O `vercel.json` agenda um cron **todo domingo à meia-noite (UTC)** em `/api/cron/clean-blobs` (`0 0 * * 0`), que remove blobs com prefixo `chat-images/` e idade superior a 24 horas. Na Vercel, defina `CRON_SECRET` no projeto; o cron envia `Authorization: Bearer <CRON_SECRET>` automaticamente. Para testar localmente:

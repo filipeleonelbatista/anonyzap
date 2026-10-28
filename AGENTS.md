@@ -97,6 +97,7 @@ CRON_SECRET   # usado pelo /api/cron/clean-blobs (Bearer)
 - O mapa de clientes SSE é **em memória por instância** — a lista "Pessoas" (`getRoomUsers`) só reflete conexões da mesma instância serverless; a presença join/leave é cross-instance via Redis.
 - Upload de imagem: apenas jpeg/png/gif/webp, máx 5MB, caminho `chat-images/` com sufixo aleatório.
 - Cron de limpeza de blobs: semanal (`0 0 * * 0` no `vercel.json`), apaga blobs `chat-images/` com mais de 24h.
+- **Banco Upstash gratuito é deletado após 14 dias de inatividade** (automação do Upstash). Sintoma: `getaddrinfo ENOTFOUND <nome>.upstash.io` + 500 nas rotas KV. Restore no console recupera dos backups, mas exige **criar o banco de destino antes**; depois, atualizar as variáveis `KV_*`. Detalhes no README (seção "Variáveis de Ambiente").
 
 ## Convenções de código
 

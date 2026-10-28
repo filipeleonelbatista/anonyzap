@@ -2,6 +2,7 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { MessageBubble } from "./MessageBubble";
 import { NewMessageIndicator } from "./NewMessageIndicator";
+import { useI18n } from "@/context/LanguageContext";
 import { EmptyRoomHints } from "./EmptyRoomHints";
 import type { Message } from "@/types";
 
@@ -26,6 +27,7 @@ export function MessageList({
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { t } = useI18n();
   const [isAtBottom, setIsAtBottom] = React.useState(true);
   const [newCount, setNewCount] = React.useState(0);
   const prevLengthRef = useRef(messages.length);
@@ -86,7 +88,7 @@ export function MessageList({
       {loadingOlder && (
         <div className="py-2 text-center">
           <span className="text-sm text-gray-400">
-            Loading older messages...
+            {t.list.loadingOlder}
           </span>
         </div>
       )}

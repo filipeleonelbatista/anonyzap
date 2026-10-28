@@ -1,9 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
+import { useI18n } from "@/context/LanguageContext";
 
 export function ThemeToggle() {
   const [dark, setDark] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     setDark(document.documentElement.classList.contains("dark"));
@@ -20,8 +22,8 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 text-white transition-colors text-sm"
-      aria-label={dark ? "Modo claro" : "Modo escuro"}
-      title={dark ? "Modo claro" : "Modo escuro"}
+      aria-label={dark ? t.theme.light : t.theme.dark}
+      title={dark ? t.theme.light : t.theme.dark}
     >
       {dark ? (
         <Sun className="w-[18px] h-[18px]" strokeWidth={2} />

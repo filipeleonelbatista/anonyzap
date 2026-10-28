@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useI18n } from "@/context/LanguageContext";
 
 const AVATARS = [
   "😀", "😎", "🤩", "😺", "🦊", "🐼",
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function AvatarSelector({ selected, onSelect }: Props) {
+  const { t } = useI18n();
   return (
     <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
       {AVATARS.map((avatar) => (
@@ -24,7 +26,7 @@ export function AvatarSelector({ selected, onSelect }: Props) {
               ? "ring-2 ring-whatsapp-green scale-110 bg-gray-100 dark:bg-gray-600"
               : "hover:bg-gray-100 dark:hover:bg-gray-600"
           }`}
-          aria-label={`Select avatar ${avatar}`}
+          aria-label={`${t.avatar.select} ${avatar}`}
         >
           {avatar}
         </button>

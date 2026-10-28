@@ -18,3 +18,5 @@ next-env.d.ts
 /design-summary.md
 /design-testing.md
 
+
+.env

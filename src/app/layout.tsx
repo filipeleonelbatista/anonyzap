@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { LgpdConsentBanner } from "@/components/LgpdConsentBanner";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://anonyzap.vercel.app";
@@ -117,7 +118,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="dns-prefetch" href={BASE_URL} />
         <script dangerouslySetInnerHTML={{
@@ -161,8 +162,10 @@ export default function RootLayout({
             }),
           }}
         />
-        {children}
-        <LgpdConsentBanner />
+        <LanguageProvider>
+          {children}
+          <LgpdConsentBanner />
+        </LanguageProvider>
       </body>
     </html>
   );
