@@ -241,7 +241,7 @@ function ChatContent({ roomId, gifEnabled }: Props) {
   );
 }
 
-export function ChatInterface({ roomId }: Props) {
+export function ChatInterface({ roomId, gifEnabled }: Props) {
   const { user, register, isRegistered, isAuthReady } = useUser();
 
   const handleRegister = (
@@ -269,7 +269,7 @@ export function ChatInterface({ roomId }: Props) {
       userName={user.name}
       userAvatar={user.avatar}
     >
-      <ChatContent roomId={roomId} />
+      <ChatContent roomId={roomId} gifEnabled={gifEnabled} />
     </RoomProvider>
   );
 }
