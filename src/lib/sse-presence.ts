@@ -1,4 +1,4 @@
-import { kv } from "@vercel/kv";
+import { kv } from "@/lib/kv";
 
 /**
  * TTL on `room:{roomId}:presence:user:{userId}` (SET of connection ids).

@@ -78,6 +78,19 @@ describe("[giphy] /api/giphy", () => {
     expect(body.gifs[0].id).toBe("abc");
   });
 
+  test("evicts oldest entries beyond the cache cap (bounded memory)", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(giphyPayload),
+    });
+    const total = 600; // above the cap
+    for (let i = 0; i < total; i++) await GET(request(`flood-${i}`));
+    expect((global.fetch as jest.Mock).mock.calls.length).toBe(total);
+    // the oldest entry was evicted: replaying it must hit GIPHY again
+    await GET(request("flood-0"));
+    expect((global.fetch as jest.Mock).mock.calls.length).toBe(total + 1);
+  });
+
   test("caches results per query (free beta key: 100 req/hour)", async () => {
     jest.useFakeTimers();
     (global.fetch as jest.Mock).mockResolvedValue({

@@ -10,6 +10,8 @@ export const dynamic = "force-dynamic";
 // Cache key: a free GIPHY Beta key is rate-limited to 100 requests/hour,
 // so identical queries (and trending) are served from a per-instance cache.
 const CACHE_TTL_MS = 5 * 60 * 1000;
+// Bounded: q is attacker-controlled on a public route — never grow unbounded.
+const CACHE_MAX_ENTRIES = 500;
 const giphyCache = new Map<string, { gifs: GifResult[]; at: number }>();
 
 interface GiphyImage {
@@ -67,6 +69,13 @@ export async function GET(request: NextRequest) {
       .filter((gif) => gif.id && gif.smallUrl && gif.url);
 
     giphyCache.set(cacheKey, { gifs, at: Date.now() });
+    if (giphyCache.size > CACHE_MAX_ENTRIES) {
+      // Map preserves insertion order: the first key is the oldest entry.
+      for (const oldest of giphyCache.keys()) {
+        giphyCache.delete(oldest);
+        break;
+      }
+    }
     return NextResponse.json({ gifs });
   } catch (error) {
     console.error("[giphy]", error);

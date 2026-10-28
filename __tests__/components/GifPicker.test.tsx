@@ -76,6 +76,13 @@ describe("GifPicker", () => {
     expect(screen.queryByAltText("Old")).toBeNull(); // late answer must not override
   });
 
+  test("gif items are keyboard-operable buttons", async () => {
+    open();
+    await waitFor(() => screen.getByAltText("Wow"));
+    // household rule: interactive list items are buttons (a11y trust boundary)
+    expect(screen.getByRole("button", { name: "Wow" })).toBeTruthy();
+  });
+
   test("shows empty state when search has no results", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({ ok: true, json: () => Promise.resolve({ gifs: [] }) });
     open();

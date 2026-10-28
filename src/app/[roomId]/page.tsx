@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import RoomClient from "./room-client";
+import { isGifPickerEnabled } from "@/lib/gif";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://anonyzap.vercel.app";
 
@@ -39,7 +40,5 @@ export default async function RoomPage({
   params: Promise<{ roomId: string }>;
 }) {
   const { roomId } = await params;
-  // GIF button only when the feature flag is set AND the GIPHY key exists.
-  const gifEnabled = !!process.env.IS_GIF_ENABLED && !!process.env.GIPHY_API_KEY;
-  return <RoomClient roomId={roomId} gifEnabled={gifEnabled} />;
+  return <RoomClient roomId={roomId} gifEnabled={isGifPickerEnabled()} />;
 }

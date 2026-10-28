@@ -1,5 +1,14 @@
-import { kv } from "@vercel/kv";
+import { createClient } from "@vercel/kv";
 import { ROOM_HISTORY_MS } from "@/lib/room-history";
+
+// The Vercel/Upstash integration injects env names prefixed with the store name (KV_ANONYZAP_*).
+// Fall back to the standard names so deployments using plain KV_* still work.
+const kv = createClient({
+  url: process.env.KV_ANONYZAP_KV_REST_API_URL ?? process.env.KV_REST_API_URL!,
+  token: process.env.KV_ANONYZAP_KV_REST_API_TOKEN ?? process.env.KV_REST_API_TOKEN!,
+});
+
+export { kv };
 import type {
   LinkPreview,
   Message,

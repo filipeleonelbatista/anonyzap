@@ -90,16 +90,21 @@ export function GifPicker({ onPick, disabled }: Props) {
           />
           <div className="overflow-y-auto grid grid-cols-2 gap-1.5">
             {gifs.map((gif) => (
-              <img
+              <button
                 key={gif.id}
-                src={gif.smallUrl}
-                alt={gif.title}
-                className="w-full max-h-[120px] object-cover rounded-lg cursor-pointer"
+                type="button"
+                className="p-0 border-0 bg-transparent cursor-pointer"
                 onClick={() => {
                   onPick(gif.url);
                   close();
                 }}
-              />
+              >
+                <img
+                  src={gif.smallUrl}
+                  alt={gif.title}
+                  className="block w-full max-h-[120px] object-cover rounded-lg"
+                />
+              </button>
             ))}
             {gifs.length === 0 && (
               <span className="col-span-2 text-xs text-gray-500 dark:text-gray-400 p-2 text-center">
