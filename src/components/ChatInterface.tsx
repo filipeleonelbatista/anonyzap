@@ -19,9 +19,11 @@ import type { LinkPreview, Message, ReplyTo } from "@/types";
 
 interface Props {
   roomId: string;
+  /** Server-computed: env IS_GIF_ENABLED set AND GIPHY_API_KEY configured. */
+  gifEnabled?: boolean;
 }
 
-function ChatContent({ roomId }: { roomId: string }) {
+function ChatContent({ roomId, gifEnabled }: Props) {
   const { user, updateProfile } = useUser();
   const { t } = useI18n();
   const [helpOpen, setHelpOpen] = useState(false);
@@ -104,6 +106,14 @@ function ChatContent({ roomId }: { roomId: string }) {
       alert(t.header.imageError);
     }
   };
+
+  // GIFs referenced by GIPHY URL only (no upload), same image path as uploads.
+  const handleSendGif = useCallback(
+    (gifUrl: string) => {
+      sendMessage("", { imageUrl: gifUrl });
+    },
+    [sendMessage]
+  );
 
   const statusLabel =
     status.type === "connected"
@@ -195,6 +205,8 @@ function ChatContent({ roomId }: { roomId: string }) {
       <MessageInput
         onSend={handleSend}
         onSendImage={handleSendImage}
+        onSendGif={handleSendGif}
+        gifEnabled={gifEnabled}
         disabled={status.type === "disconnected"}
         replyingTo={replyingTo}
         onCancelReply={handleCancelReply}

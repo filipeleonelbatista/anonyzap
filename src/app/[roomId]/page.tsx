@@ -39,5 +39,7 @@ export default async function RoomPage({
   params: Promise<{ roomId: string }>;
 }) {
   const { roomId } = await params;
-  return <RoomClient roomId={roomId} />;
+  // GIF button only when the feature flag is set AND the GIPHY key exists.
+  const gifEnabled = !!process.env.IS_GIF_ENABLED && !!process.env.GIPHY_API_KEY;
+  return <RoomClient roomId={roomId} gifEnabled={gifEnabled} />;
 }

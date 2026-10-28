@@ -2,6 +2,7 @@
 import React, { useState, useRef } from "react";
 import { ImagePlus, Send, X } from "lucide-react";
 import { LinkPreview } from "./LinkPreview";
+import { GifPicker } from "./GifPicker";
 import { useLinkDetection } from "@/hooks/useLinkDetection";
 import { isValidFileType, isValidFileSize } from "@/utils/validation";
 import { useI18n } from "@/context/LanguageContext";
@@ -10,12 +11,15 @@ import type { LinkPreview as LinkPreviewType, ReplyTo } from "@/types";
 interface Props {
   onSend: (content: string, linkPreview?: LinkPreviewType) => void;
   onSendImage: (file: File) => void;
+  onSendGif: (gifUrl: string) => void;
   disabled?: boolean;
   replyingTo?: ReplyTo | null;
   onCancelReply?: () => void;
+  /** Server-computed: env IS_GIF_ENABLED set AND GIPHY_API_KEY configured. */
+  gifEnabled?: boolean;
 }
 
-export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCancelReply }: Props) {
+export function MessageInput({ onSend, onSendImage, onSendGif, disabled, replyingTo, onCancelReply, gifEnabled }: Props) {
   const [text, setText] = useState("");
   const { links, detectLinks, clearLinks } = useLinkDetection();
   const { t } = useI18n();
@@ -143,6 +147,9 @@ export function MessageInput({ onSend, onSendImage, disabled, replyingTo, onCanc
           >
             <ImagePlus className="w-6 h-6" strokeWidth={2} />
           </button>
+          {gifEnabled && (
+            <GifPicker onPick={onSendGif} disabled={disabled} />
+          )}
           <div className="flex-1 relative min-w-0">
             <textarea
               ref={inputRef}

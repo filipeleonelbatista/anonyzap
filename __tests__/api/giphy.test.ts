@@ -72,9 +72,24 @@ describe("[giphy] /api/giphy", () => {
           data: [giphyPayload.data[0], { id: "bad", title: "", images: {} }],
         }),
     });
-    const res = await GET(request("wow"));
+    const res = await GET(request("mixed"));
     const body = await res.json();
     expect(body.gifs).toHaveLength(1);
     expect(body.gifs[0].id).toBe("abc");
+  });
+
+  test("caches results per query (free beta key: 100 req/hour)", async () => {
+    jest.useFakeTimers();
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve(giphyPayload),
+    });
+    await GET(request("cache-me"));
+    await GET(request("cache-me"));
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    jest.advanceTimersByTime(6 * 60 * 1000); // past the 5-minute TTL
+    await GET(request("cache-me"));
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
   });
 });

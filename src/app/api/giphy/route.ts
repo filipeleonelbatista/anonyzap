@@ -7,6 +7,11 @@ import type { GifResult } from "@/types";
 
 export const dynamic = "force-dynamic";
 
+// Cache key: a free GIPHY Beta key is rate-limited to 100 requests/hour,
+// so identical queries (and trending) are served from a per-instance cache.
+const CACHE_TTL_MS = 5 * 60 * 1000;
+const giphyCache = new Map<string, { gifs: GifResult[]; at: number }>();
+
 interface GiphyImage {
   url?: string;
 }
@@ -34,6 +39,12 @@ export async function GET(request: NextRequest) {
     : `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}`;
   const url = `${base}&limit=24&rating=g&fields=id,title,images.fixed_width,images.downsized_medium`;
 
+  const cacheKey = q.trim().toLowerCase();
+  const cached = giphyCache.get(cacheKey);
+  if (cached && Date.now() - cached.at < CACHE_TTL_MS) {
+    return NextResponse.json({ gifs: cached.gifs });
+  }
+
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 5000);
@@ -55,6 +66,7 @@ export async function GET(request: NextRequest) {
       }))
       .filter((gif) => gif.id && gif.smallUrl && gif.url);
 
+    giphyCache.set(cacheKey, { gifs, at: Date.now() });
     return NextResponse.json({ gifs });
   } catch (error) {
     console.error("[giphy]", error);

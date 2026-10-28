@@ -104,7 +104,9 @@ BLOB_READ_WRITE_TOKEN=...
 CRON_SECRET=...
 
 # GIF picker (`/api/giphy`) — crie uma chave gratuita em https://developers.giphy.com/
+# (chave Beta gratuita: limite de 100 chamadas de API/hora)
 GIPHY_API_KEY=...
+IS_GIF_ENABLED=true
 
 # Base URL (opcional, para OG images)
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
