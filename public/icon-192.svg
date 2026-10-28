@@ -1,5 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
-  <rect width="192" height="192" rx="38" fill="#075E54"/>
-  <path d="M45 140V68c0-8 7-15 15-15h72c8 0 15 7 15 15v60c0 8-7 15-15 15H68l-23 22Z" fill="white" opacity="0.95"/>
-  <path d="M68 76h56M68 99h44M68 122h30" stroke="#075E54" stroke-width="7" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#25D366"/>
+      <stop offset="1" stop-color="#128C7E"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#g)"/>
+  <!-- circular speech bubble, outline only -->
+  <circle cx="256" cy="236" r="140" stroke="white" stroke-width="20"/>
+  <path d="M135 306 L125 367 L197 363" stroke="white" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- incognito symbol (white) -->
+  <g transform="translate(160 140) scale(8)" stroke="#FFFFFF">
+    <path stroke-width="2" fill="none" d="M10 15.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm9 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+    <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" d="m10 15 .211-.106a4 4 0 0 1 3.578 0L14 15m3-6-1.65-4.125a1 1 0 0 0-1.245-.577l-1.473.491a2 2 0 0 1-1.264 0L9.894 4.3a1 1 0 0 0-1.245.576L7 9m-4 1c7.5-1 11-1 18 0"/>
+  </g>
 </svg>
