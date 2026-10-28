@@ -34,6 +34,8 @@ interface Messages {
   input: {
     placeholder: string;
     addImage: string;
+    searchGifs: string;
+    noGifs: string;
     cancelReply: string;
     send: string;
     invalidFileType: string;
@@ -168,6 +170,8 @@ const ptBR: Messages = {
   input: {
     placeholder: "Digite uma mensagem",
     addImage: "Adicionar imagem",
+    searchGifs: "Pesquisar GIFs em GIPHY",
+    noGifs: "Nenhum GIF",
     cancelReply: "Cancelar reply",
     send: "Enviar mensagem",
     invalidFileType: "Tipo de arquivo inválido. Use JPG, PNG, GIF ou WebP.",
@@ -327,6 +331,8 @@ const en: Messages = {
   input: {
     placeholder: "Type a message",
     addImage: "Add image",
+    searchGifs: "Search GIFs in GIPHY",
+    noGifs: "No GIFs found",
     cancelReply: "Cancel reply",
     send: "Send message",
     invalidFileType: "Invalid file type. Use JPG, PNG, GIF or WebP.",
@@ -486,6 +492,8 @@ const es: Messages = {
   input: {
     placeholder: "Escribe un mensaje",
     addImage: "Agregar imagen",
+    searchGifs: "Buscar GIFs en GIPHY",
+    noGifs: "Sin GIFs",
     cancelReply: "Cancelar respuesta",
     send: "Enviar mensaje",
     invalidFileType: "Tipo de archivo inválido. Usa JPG, PNG, GIF o WebP.",
