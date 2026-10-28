@@ -5,6 +5,7 @@
  */
 interface Messages {
   banner: {
+    regionAria: string;
     intro: string;
     privacyLink: string;
     and: string;
@@ -137,6 +138,7 @@ interface Messages {
 
 const ptBR: Messages = {
   banner: {
+    regionAria: "Aviso sobre dados pessoais (LGPD)",
     intro:
       "Utilizamos armazenamento local no seu navegador (perfil, preferência de tema) e tratamos mensagens e mídia de forma temporária nos servidores para o funcionamento do chat, conforme nossa ",
     privacyLink: "Política de Privacidade",
@@ -295,6 +297,7 @@ const ptBR: Messages = {
 
 const en: Messages = {
   banner: {
+    regionAria: "Personal data notice (LGPD)",
     intro:
       "We use local storage in your browser (profile, theme preference) and process messages and media temporarily on our servers for the chat to work, as described in our ",
     privacyLink: "Privacy Policy",
@@ -453,6 +456,7 @@ const en: Messages = {
 
 const es: Messages = {
   banner: {
+    regionAria: "Aviso sobre datos personales (LGPD)",
     intro:
       "Utilizamos almacenamiento local en tu navegador (perfil, preferencia de tema) y tratamos mensajes y multimedia temporalmente en los servidores para el funcionamiento del chat, conforme nuestra ",
     privacyLink: "Política de Privacidad",

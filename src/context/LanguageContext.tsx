@@ -40,6 +40,11 @@ export function LanguageProvider({
     }
   }, [setLocale]);
 
+  // Keep the document language in sync (accessibility + translation tools).
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
   const value = useMemo<LanguageContextType>(
     () => ({ locale, setLocale, t: dictionaries[locale] }),
     [locale, setLocale]
